@@ -1,14 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import log from '../Login../../../Pages../../../assets/images/login/login.svg'
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
 import Swal from 'sweetalert2';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';
 
 const Login = () => {
 
     const {loginUser,googleIn}=useContext(AuthContext)
     const[show,setShow]=useState(false)
+    const location=useLocation()
+    const navigate = useNavigate()
     const handleLogin = e=>{
         e.preventDefault()
         const form = e.target;
@@ -18,13 +21,26 @@ const Login = () => {
 
         loginUser(email,password)
         .then(res=>{
-            const user = res.user;
-            console.log(user)
+            const loggedInUser = res.user;
+            console.log(loggedInUser)
+
+            const user = {email}
+            axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
+            .then(data=>{
+                console.log(data.data)
+                if(data.data.success){
+                    navigate(location?.state ? location.state : '/') 
+                }
+            })
+            
+           
             Swal.fire(
                 'Congratulations',
                 'You Logged In Successfully!',
                 'success'
               )
+             
+              
         })
         .catch(err=>{
             console.log(err)
@@ -42,6 +58,7 @@ const Login = () => {
                 'You Logged In Successfully!',
                 'success'
               )
+              navigate(location?.state ? location.state : '/')
         })
         .catch(error=>{
             console.log(error)
