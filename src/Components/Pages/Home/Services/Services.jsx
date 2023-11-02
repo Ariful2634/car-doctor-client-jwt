@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import useServices from "../../../../hooks/useServices";
 import Service from "./Service";
 
 
 const Services = () => {
+    const service= useServices()
 
-    const [service, setService]=useState([])
+    // const [service, setService]=useState([])
 
-    useEffect(()=>{
-        fetch('http://localhost:5000/services')
-        .then(res=>res.json())
-        .then(data=>setService(data))
-    },[])
+    // useEffect(()=>{
+    //     fetch('http://localhost:5000/services')
+    //     .then(res=>res.json())
+    //     .then(data=>setService(data))
+    // },[])
 
     return (
         <div className="mt-16">

@@ -1,14 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import log from '../Login../../../Pages../../../assets/images/login/login.svg'
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../Provider/AuthProvider';
+import {  useState } from 'react';
+// import { AuthContext } from '../../Provider/AuthProvider';
 import Swal from 'sweetalert2';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import axios from 'axios';
+import useAuth from '../../../hooks/useAuth';
+
 
 const Login = () => {
-
-    const {loginUser,googleIn}=useContext(AuthContext)
+    const {loginUser,googleIn}=useAuth()
+    // const {loginUser,googleIn}=useContext(AuthContext)
     const[show,setShow]=useState(false)
     const location=useLocation()
     const navigate = useNavigate()
@@ -23,16 +24,7 @@ const Login = () => {
         .then(res=>{
             const loggedInUser = res.user;
             console.log(loggedInUser)
-
-            const user = {email}
-            axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
-            .then(data=>{
-                console.log(data.data)
-                if(data.data.success){
-                    navigate(location?.state ? location.state : '/') 
-                }
-            })
-            
+            navigate(location?.state ? location.state : '/')     
            
             Swal.fire(
                 'Congratulations',
