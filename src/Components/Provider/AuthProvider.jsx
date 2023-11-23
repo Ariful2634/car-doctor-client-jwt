@@ -71,7 +71,7 @@ const AuthProvider = ({children}) => {
             }
 
     })
-    },[])
+    },[user?.email])
 
 
 
